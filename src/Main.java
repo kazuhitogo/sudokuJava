@@ -7,6 +7,7 @@ import java.util.Deque;
 
 public class Main {
     public static void main(String[] args) throws CloneNotSupportedException {
+        long startTime = System.currentTimeMillis();
         int counter;
         int[][] data;
         SudokuSolve q;
@@ -30,18 +31,19 @@ public class Main {
                 q = Q.pop();
                 if(q.checkInsert()){
                     q.setNextValueToQuestion();
-
                     counter++;
-                    if (counter%10000==0){
-                        System.out.println(counter);
-                        q.printQuestion();
-                    }
                     if (q.checkComplete()){
                         couldSolve = true;
                         System.out.println("\nThe answer is ...");
                         q.printQuestion();
                         System.out.print("counter: ");
                         System.out.println(counter);
+
+                        long endTime = System.currentTimeMillis();
+                        long execTime = endTime - startTime;
+                        System.out.print("exec time : ");
+                        System.out.println(execTime);
+
                         break;
                     }
                     for (int i = q.size; i > 0; i--) {
