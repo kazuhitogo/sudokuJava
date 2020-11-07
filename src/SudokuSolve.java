@@ -32,14 +32,14 @@ public class SudokuSolve extends SudokuBase{
         int maxStrength;
         int strength;
         HashMap<String,Integer> position = new HashMap<>();
+        HashMap<String,Integer> rIdx;
+        HashMap<String,Integer> cIdx;
         for(int r=0;r<this.size;r++){
             for(int c=0;c<this.size;c++){
                 if (this.question[r][c]==0){
                     Arrays.fill(counter,0);
                     strength = 0;
-                    // 3x3 check
-                    HashMap<String,Integer> rIdx;
-                    HashMap<String,Integer> cIdx;
+                    // matrix check
                     rIdx = outputSquareRange(r);
                     cIdx = outputSquareRange(c);
                     for (int x = rIdx.get("idxMin");x<rIdx.get("idxMax");x++){
@@ -64,7 +64,7 @@ public class SudokuSolve extends SudokuBase{
         maxStrength=-1;
         for(int r=0;r<this.size;r++){
             for(int c=0;c<this.size;c++){
-                if (strengthConstraint[r][c] >= maxStrength){
+                if (strengthConstraint[r][c] > maxStrength){
                     maxStrength = strengthConstraint[r][c];
                     position.put("r",r);
                     position.put("c",c);
