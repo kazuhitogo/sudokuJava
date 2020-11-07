@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.Deque;
 
 public class Main {
     public static void main(String[] args) throws CloneNotSupportedException {
@@ -17,20 +17,25 @@ public class Main {
         if (question.getValidQuestion()){
             System.out.println("The question is ...");
             question.printQuestion();
-            Queue<SudokuSolve> Q = new ArrayDeque<SudokuSolve>();
+            Deque<SudokuSolve> Q = new ArrayDeque<SudokuSolve>();
             for (int i = question.size; i > 0; i--) {
                 q = new SudokuSolve(question.getQuestion());
                 q.setNextValue(i);
-                Q.add(q);
+                Q.push(q);
             }
             counter = 0;
             couldSolve = false;
+
             while (!Q.isEmpty()) {
-                counter++;
-                q = Q.poll();
-                if (counter%100000==0){ System.out.println(counter); }
+                q = Q.pop();
                 if(q.checkInsert()){
                     q.setNextValueToQuestion();
+
+                    counter++;
+                    if (counter%10000==0){
+                        System.out.println(counter);
+                        q.printQuestion();
+                    }
                     if (q.checkComplete()){
                         couldSolve = true;
                         System.out.println("\nThe answer is ...");
@@ -42,7 +47,7 @@ public class Main {
                     for (int i = q.size; i > 0; i--) {
                         q = new SudokuSolve(q.getQuestion());
                         q.setNextValue(i);
-                        Q.add(q);
+                        Q.push(q);
                     }
                 }
             }
@@ -66,7 +71,7 @@ public class Main {
                 if (row==0) {
                     data = new int[line_array.length][line_array.length];
                 }
-                for (int i = 0; i < line_array.length; i++) data[row][i] = Integer.parseInt(line_array[i]);
+                for (int i = 0; i < line_array.length; i++) data[row][i] = Integer.parseInt(line_array[i].replace(" ",""));
                 row++;
             }
         } catch (IOException e) {
@@ -76,17 +81,5 @@ public class Main {
             data[0][0] = -1;
         }
         return data;
-    }
-    public static void printArray(int[][] matrix2d){
-        int unit = (int)Math.sqrt(matrix2d.length);
-        for (int i = 0; i<matrix2d.length;i++){
-            if (i%unit==0 && i!=0){ System.out.print("---+---+---\n"); }
-            for (int j = 0; j<matrix2d.length;j++){
-                if (j%unit==0 && j!=0){System.out.print("|");}
-                System.out.print(matrix2d[i][j]);
-            }
-            System.out.print("\n");
-        }
-        System.out.println("---------------------------");
     }
 }
